@@ -43,7 +43,7 @@ struct PushButton: View {
 
 The text view doesn’t reflect that change....
 
-### With @Binding property
+### [With @Binding property](https://github.com/YamamotoDesu/Bookworm/commit/e9d324b476c2a5392576215b2d0b5273b4d2ce4c)
 
 <img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227859482-d82c338f-7448-48d5-ac3f-c4ee28052dd6.gif">
 
