@@ -67,3 +67,29 @@ struct ContentView: View {
  ```
 
 This is the power of @Binding: as far as the button is concerned it’s just toggling a Boolean – it has no idea that something else is monitoring that Boolean and acting upon changes.
+
+
+## [Accepting multi-line text input with TextEditor](https://www.hackingwithswift.com/books/ios-swiftui/accepting-multi-line-text-input-with-texteditor)
+
+<img width="300" alt="スクリーンショット 2023-03-27 15 44 48" src="https://user-images.githubusercontent.com/47273077/227861387-29d3fdb6-7123-468e-afa8-9436626f9e9c.png">
+
+ContentView.swift
+```swift
+struct ContentView: View {
+    @AppStorage("notes") private var notes = ""
+    
+    var body: some View {
+        NavigationView {
+            TextEditor(text: $notes)
+                .navigationTitle("Notes")
+                .padding()
+        }
+    }
+}
+```
+
+For longer pieces of text you should switch over to using a TextEditor view instead: it also expects to be given a two-way binding to a text string, but it has the additional benefit of allowing multiple lines of text – it’s much better for accepting longer strings from the user.
+
+Mostly because it has nothing special in the way of configuration options, using TextEditor is actually easier than using TextField – you can’t adjust its style or add placeholder text, you just bind it to a string. However, you do need to be careful to make sure it doesn’t go outside the safe area, otherwise typing will be tricky; embed it in a NavigationView, a Form, or similar.
+
+
