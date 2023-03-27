@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var rememberMe = false
+    @AppStorage("notes") private var notes = ""
     
     var body: some View {
-        VStack {
-            PushButton(title: "Rember Me", isOn: $rememberMe)
-            Text(rememberMe ? "On" : "Off")
+        NavigationView {
+            TextEditor(text: $notes)
+                .navigationTitle("Notes")
+                .padding()
         }
     }
 }
