@@ -40,3 +40,5 @@ struct PushButton: View {
 }
 ```
 
+The text view doesn’t reflect that change....
+
