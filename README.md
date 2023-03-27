@@ -65,3 +65,5 @@ struct ContentView: View {
             Text(rememberMe ? "On" : "Off")
         }
  ```
+
+This is the power of @Binding: as far as the button is concerned it’s just toggling a Boolean – it has no idea that something else is monitoring that Boolean and acting upon changes.
