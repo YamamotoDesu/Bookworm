@@ -45,6 +45,7 @@ The text view doesn’t reflect that change....
 
 ### With @Binding property
 
+<img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227859482-d82c338f-7448-48d5-ac3f-c4ee28052dd6.gif">
 
 PushButton.swift
 ```swift
