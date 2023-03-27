@@ -1,6 +1,6 @@
 # Bookworm
 
-### Creating a custom component with @Binding
+### [Creating a custom component with @Binding](https://www.hackingwithswift.com/books/ios-swiftui/creating-a-custom-component-with-binding)
 ### With @State property
 
 <img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227856494-6955c50d-ac36-4a8e-8c16-a223b35cebaf.gif">
