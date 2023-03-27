@@ -92,4 +92,55 @@ For longer pieces of text you should switch over to using a TextEditor view inst
 
 Mostly because it has nothing special in the way of configuration options, using TextEditor is actually easier than using TextField – you can’t adjust its style or add placeholder text, you just bind it to a string. However, you do need to be careful to make sure it doesn’t go outside the safe area, otherwise typing will be tricky; embed it in a NavigationView, a Form, or similar.
 
+## [How to combine Core Data and SwiftUI](https://www.hackingwithswift.com/books/ios-swiftui/how-to-combine-core-data-and-swiftui)
 
+<img width="300" alt="スクリーンショット 2023-03-27 15 44 48" src="https://user-images.githubusercontent.com/47273077/227876405-1ec2fcc4-d35b-45de-b0dc-cdd02930bd6c.gif">
+
+DataController.swift
+BookwormApp.swift
+```swift
+@main
+struct BookwormApp: App {
+    @StateObject private var dataController = DataController()
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+        }
+    }
+}
+
+```
+
+ContentView.swift
+```swift
+struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var students: FetchedResults<Student>
+    
+    var body: some View {
+        VStack {
+            List(students) { student in
+                Text(student.name ?? "Unknown")
+            }
+            
+            Button("Add") {
+                let firstNames = ["Ginny", "Harry", "Hermione", "Luna", "Ron"]
+                let lastNames = ["Granger", "Lovegood", "Potter", "Weasley"]
+                
+                let chosenFirstName = firstNames.randomElement()!
+                let chosenLastName = lastNames.randomElement()!
+                
+                let student = Student(context: moc)
+                student.id = UUID()
+                student.name = "\(chosenFirstName) \(chosenLastName)"
+                try? moc.save()
+            }
+        }
+    }
+}
+```
+
+Bookworm.xcdatamodeld
+<img width="840" alt="スクリーンショット 2023-03-27 16 54 48" src="https://user-images.githubusercontent.com/47273077/227876954-aca93b4c-bfa6-4786-9514-974da29607c7.png">
