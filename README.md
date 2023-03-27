@@ -1,6 +1,7 @@
 # Bookworm
 
-## With @State property
+### [Creating a custom component with @Binding](https://www.hackingwithswift.com/books/ios-swiftui/creating-a-custom-component-with-binding)
+### With @State property
 
 <img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227856494-6955c50d-ac36-4a8e-8c16-a223b35cebaf.gif">
 
@@ -42,3 +43,27 @@ struct PushButton: View {
 
 The text view doesn’t reflect that change....
 
+### With @Binding property
+
+<img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227859482-d82c338f-7448-48d5-ac3f-c4ee28052dd6.gif">
+
+PushButton.swift
+```swift
+struct PushButton: View {
+    let title: String
+    @Binding var isOn: Bool
+```
+
+ContentView.swift
+```swift
+struct ContentView: View {
+    @State private var rememberMe = false
+    
+    var body: some View {
+        VStack {
+            PushButton(title: "Rember Me", isOn: $rememberMe)
+            Text(rememberMe ? "On" : "Off")
+        }
+ ```
+
+This is the power of @Binding: as far as the button is concerned it’s just toggling a Boolean – it has no idea that something else is monitoring that Boolean and acting upon changes.
