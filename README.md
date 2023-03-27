@@ -1,6 +1,7 @@
 # Bookworm
 
-## With @State property
+### Creating a custom component with @Binding
+### With @State property
 
 <img width="300" alt="スクリーンショット 2023-03-27 15 15 55" src="https://user-images.githubusercontent.com/47273077/227856494-6955c50d-ac36-4a8e-8c16-a223b35cebaf.gif">
 
@@ -42,3 +43,24 @@ struct PushButton: View {
 
 The text view doesn’t reflect that change....
 
+### With @Binding property
+
+
+PushButton.swift
+```swift
+struct PushButton: View {
+    let title: String
+    @Binding var isOn: Bool
+```
+
+ContentView.swift
+```swift
+struct ContentView: View {
+    @State private var rememberMe = false
+    
+    var body: some View {
+        VStack {
+            PushButton(title: "Rember Me", isOn: $rememberMe)
+            Text(rememberMe ? "On" : "Off")
+        }
+ ```
