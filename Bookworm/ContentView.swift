@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            PushButton(title: "Rember Me", isOn: rememberMe)
+            PushButton(title: "Rember Me", isOn: $rememberMe)
             Text(rememberMe ? "On" : "Off")
         }
     }
