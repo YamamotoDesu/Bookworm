@@ -241,3 +241,82 @@ struct ContentView: View {
     }
 }
 ```
+
+## [Adding a custom star rating component](https://www.hackingwithswift.com/books/ios-swiftui/adding-a-custom-star-rating-component)
+
+<img width="300" alt="スクリーンショット 2023-03-30 18 43 51" src="https://user-images.githubusercontent.com/47273077/228983603-4e0b9369-4c61-42fe-848a-1a6e501f5a49.gif">
+
+RatingView.swift
+```swift
+import SwiftUI
+
+struct RatingView: View {
+    @Binding var rating: Int
+    
+    var label = ""
+    var maximumRating = 5
+    
+    var offImage: Image?
+    var onImage = Image(systemName: "star.fill")
+    
+    var offColor = Color.gray
+    var onColor = Color.yellow
+    
+    var body: some View {
+        HStack {
+            if label.isEmpty == false {
+                Text(label)
+            }
+            
+            ForEach(1..<maximumRating + 1, id: \.self) { number in
+                image(for: number)
+                    .foregroundColor(number > rating ? offColor : onColor)
+                    .onTapGesture {
+                        rating = number
+                    }
+            }
+        }
+    }
+    
+    func image(for number: Int) -> Image {
+        if number > rating {
+            return offImage ?? onImage
+        } else {
+            return onImage
+        }
+    }
+}
+
+struct RatingView_Previews: PreviewProvider {
+    static var previews: some View {
+        RatingView(rating: .constant(4))
+    }
+}
+```
+
+AddBookView.swift
+```swift
+struct AddBookView: View {
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var title = ""
+    @State private var author = ""
+    @State private var rating = 3
+    @State private var genre = ""
+    @State private var review = ""
+    
+    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
+    
+    var body: some View {
+        NavigationView {
+        
+        ------------中略----------------
+                Section {
+                    TextEditor(text: $review)
+                    
+                    RatingView(rating: $rating)
+
+
+```
+                    
