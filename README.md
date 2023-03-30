@@ -321,3 +321,87 @@ struct AddBookView: View {
 ```
 
 SwiftUI has a specific and simple solution for this called constant bindings. These are bindings that have fixed values, which on the one hand means they can’t be changed in the UI, but also means we can create them trivially – they are perfect for previews.            
+
+## [Building a list with @FetchRequest](https://www.hackingwithswift.com/books/ios-swiftui/building-a-list-with-fetchrequest)
+
+<img width="300" alt="スクリーンショット 2023-03-31 8 33 57" src="https://user-images.githubusercontent.com/47273077/228987485-0cf52617-839b-4606-b221-b80900d1868b.png">
+
+EmojiRatingView.swift
+```swift
+import SwiftUI
+
+struct EmojiRatingView: View {
+    let rating: Int16
+    
+    var body: some View {
+        switch rating {
+        case 1:
+            return Text("🙈")
+        case 2:
+            return Text("😔")
+        case 3:
+            return Text("🙂")
+        case 4:
+            return Text("😊")
+        default:
+            return Text("🤩")
+        }
+    }
+}
+
+struct EmojiRatingView_Previews: PreviewProvider {
+    static var previews: some View {
+        EmojiRatingView(rating: 3)
+    }
+}
+```
+
+ContentView.swift
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @State private var showingAddScreen = false
+
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(books) { book in
+                    NavigationLink {
+                        Text(book.title ?? "Unknown Title")
+                    } label: {
+                        HStack {
+                            EmojiRatingView(rating: book.rating)
+                                .font(.largeTitle)
+                            
+                            VStack(alignment: .leading) {
+                                Text(book.title ?? "Unknown Title")
+                                    .font(.headline)
+                                
+                                Text(book.author ?? "Unknown Author")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Bookworm")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingAddScreen.toggle()
+                    } label: {
+                        Label("Add Book", systemImage: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddScreen) {
+                AddBookView()
+            }
+        }
+    }
+}
+```
