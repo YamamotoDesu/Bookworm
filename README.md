@@ -319,4 +319,5 @@ struct AddBookView: View {
 
 
 ```
-                    
+
+SwiftUI has a specific and simple solution for this called constant bindings. These are bindings that have fixed values, which on the one hand means they can’t be changed in the UI, but also means we can create them trivially – they are perfect for previews.            
