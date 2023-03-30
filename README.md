@@ -144,3 +144,100 @@ struct ContentView: View {
 
 Bookworm.xcdatamodeld
 <img width="840" alt="スクリーンショット 2023-03-27 16 54 48" src="https://user-images.githubusercontent.com/47273077/227876954-aca93b4c-bfa6-4786-9514-974da29607c7.png">
+
+## [Creating books with Core Data](https://www.hackingwithswift.com/books/ios-swiftui/creating-books-with-core-data)
+
+<img width="300" alt="スクリーンショット 2023-03-30 18 43 51" src="https://user-images.githubusercontent.com/47273077/228798783-2134da5e-f03a-4c11-a8f1-263bf3074637.gif">
+
+<img width="717" alt="スクリーンショット 2023-03-30 18 43 51" src="https://user-images.githubusercontent.com/47273077/228796961-1dc4bcf5-6788-4ec7-acc0-29e5d6c664c9.png">
+
+AddBookView.swift
+```swift
+import SwiftUI
+
+struct AddBookView: View {
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var title = ""
+    @State private var author = ""
+    @State private var rating = 3
+    @State private var genre = ""
+    @State private var review = ""
+    
+    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section {
+                    TextField("Name of book", text: $title)
+                    TextField("Author of book", text: $author)
+                    
+                    Picker("Genre", selection: $genre) {
+                        ForEach(genres, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                }
+                
+                Section {
+                    TextEditor(text: $review)
+                    
+                    Picker("Rating", selection: $rating) {
+                        ForEach(0..<6) {
+                            Text(String($0))
+                        }
+                    }
+                } header: {
+                    Text("write a review")
+                }
+                
+                Section {
+                    Button("Save") {
+                        // add the book
+                        let newBook = Book(context: moc)
+                        newBook.id = UUID()
+                        newBook.title = title
+                        newBook.rating = Int16(rating)
+                        newBook.review = review
+                        
+                        try? moc.save()
+                        dismiss()
+                    }
+                }
+            }
+            .navigationTitle("Add Book")
+        }
+    }
+}
+```
+
+ContentView.swift
+```swift
+struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @State private var showingAddScreen = false
+
+    var body: some View {
+        NavigationView {
+            Text("Count: \(books.count)")
+                .navigationTitle("Bookworm")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showingAddScreen.toggle()
+                        } label: {
+                            Label("Add Book", systemImage: "plus")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showingAddScreen) {
+                    AddBookView()
+                }
+        }
+    }
+}
+```
