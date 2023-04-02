@@ -519,3 +519,69 @@ ContentView.swift
         try? moc.save()
     }
  ```
+ 
+ ## Using an alert to pop a NavigationLink programmatically
+ 
+ <img width="300" alt="スクリーンショット 2023-03-31 9 42 07" src="https://user-images.githubusercontent.com/47273077/229349106-630c63cd-2bd9-4002-b84f-a86a9ef03815.gif">
+
+ DetailView.swift
+ ```swift
+ struct DetailView: View {
+    let book: Book
+    
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
+    @State private var shoingDeleteAlert = false
+    
+    var body: some View {
+        ScrollView {
+            ZStack(alignment: .bottomTrailing) {
+                Image(book.genre ?? "Fantasy")
+                    .resizable()
+                    .scaledToFit()
+                
+                Text(book.genre?.uppercased() ?? "FANTASY")
+                    .font(.caption)
+                    .fontWeight(.black)
+                    .padding(8)
+                    .foregroundColor(.white)
+                    .background(.black.opacity(0.75))
+                    .clipShape(Capsule())
+                    .offset(x: -5, y: -5)
+            }
+            
+            Text(book.author ?? "Unknown Author")
+                .font(.title)
+                .foregroundColor(.secondary)
+            
+            Text(book.review ?? "No review")
+                .padding()
+            
+            RatingView(rating: .constant(Int(book.rating)))
+                .font(.largeTitle)
+        }
+        .navigationTitle(book.title ?? "Unknown Book")
+        .navigationBarTitleDisplayMode(.inline)
+        .alert("Delete book?", isPresented: $shoingDeleteAlert) {
+            Button("Delte", role: .destructive, action: deleteBook)
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Are you sure?")
+        }
+        .toolbar {
+            Button {
+                shoingDeleteAlert = true
+            } label: {
+                Label("Delte this book", systemImage: "trash")
+            }
+        }
+    }
+    
+    func deleteBook() {
+        moc.delete(book)
+        
+        try? moc.save()
+        dismiss()
+    }
+}
+```
