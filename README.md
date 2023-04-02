@@ -451,7 +451,7 @@ struct DetailView: View {
 
 ```
 
-## [Sorting fetch requests with SortDescriptor]()
+## [Sorting fetch requests with SortDescriptor](https://www.hackingwithswift.com/books/ios-swiftui/sorting-fetch-requests-with-sortdescriptor)
 
 ```swift
 struct ContentView: View {
