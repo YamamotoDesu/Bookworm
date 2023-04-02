@@ -450,3 +450,16 @@ struct DetailView: View {
 }
 
 ```
+
+## [Sorting fetch requests with SortDescriptor]()
+
+```swift
+struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [
+//        SortDescriptor(\.title, order: .reverse)
+        SortDescriptor(\.title),
+        SortDescriptor(\.author)
+    ]) var books: FetchedResults<Book>
+    
+```
